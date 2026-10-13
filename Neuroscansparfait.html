@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>~*~ SOUL_CONTRACT_DEBRET.exe ~*~</title>
+
+    <style>
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #000000;
+            color: #00ff00;
+            font-family: "Courier New", Courier, monospace;
+            text-align: center;
+            margin: 0;
+            padding: 10px;
+            overflow: hidden;
+            user-select: none;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #step-contract {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #step-audio {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000;
+            z-index: 98888;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #step-main {
+            border: 2px dashed #ff0000;
+            background-color: #0a0a0a;
+            width: 100%;
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 15px;
+            box-shadow: 0 0 20px #ff0000;
+            position: relative;
+            z-index: 10;
+            display: none;
+        }
+
+        /* Landing Page Souvenir Vidéo */
+        #step-souvenir {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #111;
+            z-index: 99999999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            color: #fff;
+            overflow-y: auto;
+        }
+
+        .souvenir-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 4px gold solid;
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .captured-video {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 3px solid #fff;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+            transform: scaleX(-1);
+        }
+
+        .btn-action {
+            background: #ff0055;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 5px;
+            width: 90%;
+            box-shadow: 0 4px 10px rgba(255, 0, 85, 0.4);
+        }
+
+        .btn-prank-next {
+            background: #00cc44;
+            color: black;
+            border: 2px solid #00ff55;
+            padding: 12px 20px;
+            font-size: 0.95em;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 90%;
+            box-shadow: 0 0 15px rgba(0, 255, 68, 0.6);
+        }
+
+        .contract-box {
+            border: 3px ridge #ff0000;
+            background: #0a0a0a;
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .contract-buttons {
+            margin-top: 30px;
+            position: relative;
+            height: 60px;
+            width: 100%;
+        }
+
+        .btn-contract {
+            background: #8b0000;
+            border: 2px outset #ff0000;
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 10px 25px;
+            cursor: pointer;
+            font-family: "Courier New", Courier, monospace;
+            outline: none;
+            user-select: none;
+        }
+
+        #btn-yes { position: absolute; left: 15%; }
+        #btn-no { position: absolute; left: 60%; transition: top 0.1s ease, left 0.1s ease; }
+
+        h1 {
+            color: #ff0000;
+            text-shadow: 2px 2px #00ff00;
+            font-size: 1.4em;
+            animation: glitch-title 0.5s infinite;
+        }
+
+        @keyframes glitch-title {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); color: #fff; }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); color: #ff0000; }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        #camera-box {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            height: 240px;
+            margin: 15px auto;
+            border: 2px solid #00ff00;
+            background: #111;
+            box-shadow: inset 0 0 10px #000;
+            overflow: hidden;
+        }
+
+        #webcam {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+            filter: contrast(130%) grayscale(30%) sepia(50%) hue-rotate(50deg);
+        }
+
+        .btn-horror {
+            background: #8b0000;
+            border: 3px outset #ff0000;
+            color: #ffffff;
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 12px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-family: "Courier New", Courier, monospace;
+            box-shadow: 0 0 10px #ff0000;
+            width: 100%;
+        }
+
+        .btn-horror:active { border-style: inset; }
+
+        #status {
+            font-size: 0.9em;
+            color: #ffff00;
+            margin-top: 10px;
+            min-height: 35px;
+        }
+
+        /* Pop-ups Windows 98 : z-index Boosté pour être BIEN VISIBLE par-dessus tout ! */
+        .chaos-window {
+            position: absolute;
+            background: #c0c0c0;
+            border: 2px outset #ffffff;
+            color: #000;
+            width: 210px;
+            box-shadow: 4px 4px 12px rgba(255, 0, 0, 0.8);
+            z-index: 999999; /* Passe par-dessus l'interface principale */
+            text-align: left;
+            font-family: sans-serif;
+            font-size: 11px;
+            will-change: transform, left, top;
+        }
+
+        .chaos-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: white;
+            padding: 2px 5px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .chaos-body {
+            padding: 8px;
+            background: #ece9d8;
+            color: #000;
+        }
+
+        .red-flash {
+            background-color: #ff0000 !important;
+            color: #ffffff !important;
+        }
+
+        #scare-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #000;
+            z-index: 9999999;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .progressive-glitch {
+            animation: prog-glitch 0.2s infinite;
+            filter: contrast(180%) hue-rotate(45deg);
+        }
+
+        @keyframes prog-glitch {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(-3px, 3px); filter: contrast(250%) invert(20%); }
+            100% { transform: translate(3px, -3px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ÉTAPE 1 : Contrat d'Âme -->
+    <div id="step-contract">
+        <div class="contract-box">
+            <p style="font-size: 1.4em; color: #ff0000; margin-bottom: 15px;">📜 CONTRAT LÉGAL DE CESSION</p>
+            <p style="color: #ccc; font-size: 1em; line-height: 1.4;">
+                Acceptez-vous de vendre votre âme à la <b>famille Debret</b> pour accéder à cette archive ?
+            </p>
+            
+            <div class="contract-buttons">
+                <button class="btn-contract" id="btn-yes">OUI</button>
+                <button class="btn-contract" id="btn-no">NON</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ÉTAPE 2 : Écouter les Criquets -->
+    <div id="step-audio">
+        <div class="contract-box" style="border-color: #00ff00; box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);">
+            <p style="font-size: 1.8em; margin-bottom: 10px;">🎧</p>
+            <p id="audio-text" style="color: #ccc; font-size: 1em; line-height: 1.4;">
+                Augmentez le son jusqu'à entendre les criquets...
+            </p>
+            
+            <button class="btn-horror" id="btn-audio-valid" style="background: #008000; border-color: #00ff00; margin-top: 25px;">
+                C'EST BON, J'ENTENDS !
+            </button>
+        </div>
+    </div>
+
+    <!-- ÉTAPE 3 : Interface Principale & Caméra -->
+    <div id="step-main">
+        <marquee scrollamount="5">[!] CONNEXION ÉTABLIE AVEC LE DOMAINE DEBRET - AME LIÉE [!]</marquee>
+        
+        <h1>⚠️ SURVEILLANCE ACTIVE ⚠️</h1>
+        <p style="color: #ff5555; font-size: 0.85em; margin: 5px 0;">Analyse des micro-expressions du sujet...</p>
+        
+        <div id="camera-box">
+            <video id="webcam" autoplay playsinline muted></video>
+        </div>
+
+        <button class="btn-horror" id="startBtn">LANCER LE DIAGNOSTIC</button>
+        <div id="status">Statut : En attente du diagnostic...</div>
+    </div>
+
+    <!-- ÉTAPE 4 : Landing Page Souvenir Vidéo -->
+    <div id="step-souvenir">
+        <div class="souvenir-card">
+            <h2 style="color: #ffd700; margin: 0;">🎢 VIDÉO DU SURSAUT 🎢</h2>
+            <p style="font-size: 0.85em; color: #aaa;">Attraction: ~ Debret Soul Collector ~</p>
+            
+            <video id="my-screamer-video" class="captured-video" controls autoplay loop playsinline></video>
+
+            <p style="font-size: 0.9em; color: #fff;">🏆 **Sursaut capturé avec succès !**</p>
+
+            <a id="download-link" download="mon_sursaut_debret.webm">
+                <button class="btn-action">📸 Télécharger ma vidéo</button>
+            </a>
+            
+            <button class="btn-action" style="background:#0088cc;" onclick="shareReaction()">🚀 Partager la frayeur</button>
+            
+            <button class="btn-prank-next" onclick="preparePrankForFriend()">
+                🔥 PIÉGER UN POTE (RECOMMENCER)
+            </button>
+        </div>
+    </div>
+
+    <div id="desktop-chaos"></div>
+    <div id="scare-overlay"></div>
+
+    <!-- Fichiers Audio & Jumpscare -->
+    <audio id="ambientSound" src="criquets.mp3" preload="auto" loop></audio>
+    <audio id="glitch1Sound" src="glitch1.mp3" preload="auto"></audio>
+    <audio id="glitch2Sound" src="glitch2.mp3" preload="auto" loop></audio>
+    <audio id="glitch3Sound" src="glitch3.mp3" preload="auto"></audio>
+    <audio id="errorSound" src="error.mp3" preload="auto"></audio>
+    <audio id="screamSound" src="jumpscare.mp3" preload="auto"></audio>
+
+    <script>
+        const stepContract = document.getElementById('step-contract');
+        const stepAudio = document.getElementById('step-audio');
+        const stepMain = document.getElementById('step-main');
+        const stepSouvenir = document.getElementById('step-souvenir');
+        
+        const btnYes = document.getElementById('btn-yes');
+        const btnNo = document.getElementById('btn-no');
+        const btnAudioValid = document.getElementById('btn-audio-valid');
+        const audioText = document.getElementById('audio-text');
+        const startBtn = document.getElementById('startBtn');
+        const statusText = document.getElementById('status');
+        const overlay = document.getElementById('scare-overlay');
+        
+        const ambientSound = document.getElementById('ambientSound');
+        const glitch1Sound = document.getElementById('glitch1Sound');
+        const glitch2Sound = document.getElementById('glitch2Sound');
+        const glitch3Sound = document.getElementById('glitch3Sound');
+        const errorSound = document.getElementById('errorSound');
+        const screamSound = document.getElementById('screamSound');
+        
+        const chaosContainer = document.getElementById('desktop-chaos');
+        const video = document.getElementById('webcam');
+        const screamerVideo = document.getElementById('my-screamer-video');
+        const downloadLink = document.getElementById('download-link');
+
+        let easterEggTriggered = false;
+        let mediaRecorder;
+        let recordedChunks = [];
+
+        window.addEventListener('load', () => {
+            const savedVideoUrl = localStorage.getItem('debret_victim_video');
+            if (savedVideoUrl) {
+                stepContract.style.display = 'none';
+                screamerVideo.src = savedVideoUrl;
+                downloadLink.href = savedVideoUrl;
+                stepSouvenir.style.display = 'flex';
+            }
+        });
+
+        function preparePrankForFriend() {
+            localStorage.removeItem('debret_victim_video');
+            location.reload();
+        }
+
+        // Bouton NON
+        function dodgeNoButton(e) {
+            if (e) e.preventDefault();
+            const randomX = Math.floor(Math.random() * 220) - 110; 
+            const randomY = Math.floor(Math.random() * 160) - 80;
+            btnNo.style.left = `calc(50% + ${randomX}px)`;
+            btnNo.style.top = `${randomY}px`;
+        }
+
+        btnNo.addEventListener('mouseover', dodgeNoButton);
+        btnNo.addEventListener('touchstart', dodgeNoButton);
+        btnNo.addEventListener('click', (e) => { e.preventDefault(); dodgeNoButton(); });
+
+        btnYes.addEventListener('click', () => {
+            stepContract.style.display = 'none';
+            stepAudio.style.display = 'flex';
+            ambientSound.volume = 0.8;
+            ambientSound.play().catch(() => {});
+
+            setTimeout(() => {
+                if (!easterEggTriggered && stepAudio.style.display !== 'none') {
+                    easterEggTriggered = true;
+                    stepAudio.classList.add('red-flash');
+                    audioText.innerText = "jusqu'à entendre les morts...";
+                    glitch1Sound.currentTime = 0;
+                    glitch1Sound.play().catch(() => {});
+                    
+                    setTimeout(() => {
+                        stepAudio.classList.remove('red-flash');
+                        audioText.innerText = "Augmentez le son jusqu'à entendre les criquets...";
+                    }, 150);
+                }
+            }, 10000);
+        });
+
+        btnAudioValid.addEventListener('click', () => {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            }
+
+            ambientSound.pause();
+            ambientSound.currentTime = 0;
+            stepAudio.style.display = 'none';
+            stepMain.style.display = 'block';
+
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then(stream => { 
+                    video.srcObject = stream; 
+                    setupRecorder(stream);
+                })
+                .catch(err => { statusText.innerText = "Erreur : Caméra/Micro refusés !"; });
+        });
+
+        function setupRecorder(stream) {
+            try {
+                mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp8' });
+            } catch (e) {
+                try {
+                    mediaRecorder = new MediaRecorder(stream);
+                } catch(err) {
+                    console.log("MediaRecorder non supporté");
+                }
+            }
+
+            if (mediaRecorder) {
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data && event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = () => {
+                        localStorage.setItem('debret_victim_video', reader.result);
+                        screamerVideo.src = reader.result;
+                        downloadLink.href = reader.result;
+                    };
+                };
+            }
+        }
+
+        let enableChaosMovement = false;
+
+        function triggerFakePermissionPanics() {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(() => {}, () => {});
+            }
+        }
+
+        // Diagnostic & Séquence d'escalade
+        startBtn.addEventListener('click', () => {
+            startBtn.style.display = 'none';
+            statusText.innerHTML = "<span style='color:red;'>[!] EXTRACTION DES FLUX VITAUX...</span>";
+
+            setTimeout(() => {
+                createChaosWindow(false, "navigator.mediaDevices.getUserMedia()");
+            }, 1000);
+
+            setTimeout(() => {
+                createChaosWindow(false, "document.getElementById('webcam') - Buffer OK");
+                createChaosWindow(false, "Debret_Soul_Collector.exe - Linked");
+            }, 2500);
+
+            // À 4.5s : Début de la panique
+            setTimeout(() => {
+                statusText.innerHTML = "<span style='color:orange;'>ATTENTION : DEMANDE D'ACCÈS MATÉRIEL</span>";
+                document.body.classList.add('progressive-glitch');
+                triggerFakePermissionPanics();
+                glitch2Sound.volume = 1.0;
+                glitch2Sound.play().catch(() => {});
+                enableChaosMovement = true; 
+                
+                for(let i = 0; i < 6; i++) {
+                    setTimeout(() => createChaosWindow(true, "TU ES LE PROCHAIN"), i * 150);
+                }
+            }, 4500);
+
+            // Phase de flood des fenêtres
+            setTimeout(() => {
+                statusText.innerHTML = "<span style='color:red; font-weight:bold;'>CRITICAL OVERLOAD - FAMILY DEBRET WATCHING</span>";
+
+                let floodInterval = setInterval(() => {
+                    createChaosWindow(true, "TU ES LE PROCHAIN");
+                    createChaosWindow(true, "TU ES LE PROCHAIN");
+                }, 100);
+
+                setTimeout(() => { clearInterval(floodInterval); }, 3200);
+
+            }, 7500);
+
+            // TIMING RECTIFIÉ : Enregistrement lancé pile à 9.5s (2 SECONDES AVANT LE JUMPSCARE) !
+            setTimeout(() => {
+                if (mediaRecorder && mediaRecorder.state === "inactive") {
+                    recordedChunks = [];
+                    mediaRecorder.start();
+                }
+            }, 9500);
+
+            // À 11.5s : CLIMAX JUMPSCARE
+            setTimeout(() => {
+                glitch2Sound.pause();
+                glitch3Sound.volume = 1.0;
+                glitch3Sound.play().catch(() => {});
+
+                chaosContainer.innerHTML = "";
+                document.body.classList.remove('progressive-glitch');
+                document.body.style.backgroundColor = "#ffffff";
+                
+                setTimeout(() => {
+                    triggerFinalJumpscare();
+                }, 150);
+
+            }, 11500);
+        });
+
+        function createChaosWindow(shouldMove, customText) {
+            const win = document.createElement('div');
+            win.className = 'chaos-window';
+            
+            const posX = Math.random() * (window.innerWidth - 220);
+            const posY = Math.random() * (window.innerHeight - 130);
+            win.style.left = posX + 'px';
+            win.style.top = posY + 'px';
+
+            errorSound.currentTime = 0;
+            errorSound.play().catch(() => {});
+
+            win.innerHTML = `
+                <div class="chaos-titlebar">
+                    <span>Erreur Système</span>
+                    <span>[X]</span>
+                </div>
+                <div class="chaos-body">
+                    <p style="margin: 0 0 8px 0; font-weight:bold; color: ${customText === 'TU ES LE PROCHAIN' ? 'red' : 'black'};">⚠️ ${customText}</p>
+                    <button style="width:100%; padding:2px;" onclick="this.parentElement.parentElement.remove()">OK</button>
+                </div>
+            `;
+            chaosContainer.appendChild(win);
+
+            if (shouldMove || enableChaosMovement) {
+                let speedX = (Math.random() - 0.5) * 14;
+                let speedY = (Math.random() - 0.5) * 14;
+                
+                setInterval(() => {
+                    let currentLeft = parseFloat(win.style.left);
+                    let currentTop = parseFloat(win.style.top);
+                    
+                    win.style.left = (currentLeft + speedX) + 'px';
+                    win.style.top = (currentTop + speedY) + 'px';
+                    
+                    if (currentLeft < 0 || currentLeft > window.innerWidth - 200) speedX *= -1;
+                    if (currentTop < 0 || currentTop > window.innerHeight - 100) speedY *= -1;
+                }, 50);
+            }
+        }
+
+        function triggerFinalJumpscare() {
+            document.body.style.backgroundColor = "#000000";
+            overlay.style.backgroundImage = "url('jumpscare.jpg')";
+            overlay.style.display = "block";
+
+            screamSound.volume = 1.0;
+            screamSound.currentTime = 0;
+            screamSound.play().catch(() => {});
+
+            let flashState = true;
+            let flashInterval = setInterval(() => {
+                overlay.style.filter = flashState ? "brightness(400%) contrast(400%)" : "invert(100%) blur(4px)";
+                flashState = !flashState;
+            }, 30);
+
+            // TIMING RECTIFIÉ : Coupe la vidéo pile à 14.5s (soit 5s totales d'enregistrement : 2s avant + 3s pendant le scream)
+            setTimeout(() => {
+                if (mediaRecorder && mediaRecorder.state === "recording") {
+                    mediaRecorder.stop();
+                }
+            }, 3000);
+
+            setTimeout(() => {
+                clearInterval(flashInterval);
+                overlay.style.display = "none";
+                stepMain.style.display = "none";
+                stepSouvenir.style.display = "flex";
+            }, 3500);
+        }
+
+        function shareReaction() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Mon sursaut sur Debret Soul Collector !',
+                    text: 'Regarde ma vidéo quand je me suis fait pranker ptdrrr !',
+                    url: window.location.href
+                }).catch(() => {});
+            } else {
+                alert("Copie l'URL du site et envoie-la à tes potes !");
+            }
+        }
+    </script>
+</body>
+</html>
